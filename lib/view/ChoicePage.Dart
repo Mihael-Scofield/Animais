@@ -58,24 +58,40 @@ class ChoicePageState extends State<ChoicePage> {
 
                   children: <Widget>[
 
-                  Container(
-                  height: 170,
-                  width: 170,
-                  decoration: (BoxDecoration(
-                    image: DecorationImage(
-                      image: new NetworkImage(dogImage), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(12),
-                  ))),
+                  InkWell(
+                    child: Container(
+                      height: 170,
+                      width: 170,
+                      decoration: (BoxDecoration(
+                        image: DecorationImage(
+                          image: new NetworkImage(dogImage), fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(12),
+                      ))),
+                    onTap: () {
+                      navigateToAnimalPage('cachorro');
+                    },
+                  ),
 
-                  Container(
-                  height: 170,
-                  width: 170,
-                  decoration: (BoxDecoration(
-                    image: DecorationImage(
-                      image: new NetworkImage(catImage), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(12),
-                  )))
+                  InkWell(
+                      child: Container(                  
+                      height: 170,
+                      width: 170,
+                      decoration: (BoxDecoration(
+                        image: DecorationImage(
+                          image: new NetworkImage(catImage), fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(12),
+                      ))),
+                    onTap: () {
+                      navigateToAnimalPage('gato');
+                    },
+                  )
                 ])
         )));
+  }
+
+  void navigateToAnimalPage(String chosenAnimal) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return AnimalPage(chosenAnimal);
+    }));
   }
 }
