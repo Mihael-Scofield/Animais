@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animais/Screens/ChoicePage.Dart';
+import 'package:cat_app/view/ChoicePage.Dart';
 
 void main() {
   runApp(MyApp());
