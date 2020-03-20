@@ -1,10 +1,7 @@
+import 'package:cat_app/utils/FetchData.dart';
 import 'package:flutter/material.dart';
 import 'package:cat_app/view/AnimalPage.dart';
-import 'package:cat_app/api/CatApi.dart';
-import 'package:cat_app/api/DogApi.dart';
 import 'package:cat_app/model/Cats.dart';
-import 'package:cat_app/model/Dogs.dart';
-import 'dart:convert';
 
 class ChoicePage extends StatefulWidget {
   @override
@@ -14,35 +11,27 @@ class ChoicePage extends StatefulWidget {
 }
 
 class ChoicePageState extends State<ChoicePage> {
-  CatList catList;
   String catImage;
   String dogImage;
-
-  void setDogImage() async {
-    var dogImageUrl = await DogAPI().getDogBreeds();
-
-    setState(() {
-      dogImage = dogImageUrl;
-    });
-  }
-
-  void setCatImage() async {
-    var catJson = await CatAPI().getSingleCatBreed();
-    print(catJson);
-
-    var catMap = json.decode(catJson);
-    print(catMap);
-    setState(() {
-      catList = CatList.fromJson(catMap);
-      catImage = catList.breeds[0].url;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    setCatImage();
-    setDogImage();
+    setAnimalsImages();
+  }
+
+  void setAnimalsImages() async {
+    FetchData fetchData = new FetchData();
+   setState(() async {
+      catImage = await fetchData.setCatImage();
+      dogImage = await fetchData.setDogImage();      
+    });
+  }
+
+  void navigateToAnimalPage(String chosenAnimal) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return AnimalPage(chosenAnimal);
+    }));
   }
 
   @override
@@ -53,8 +42,8 @@ class ChoicePageState extends State<ChoicePage> {
         ),
         body: SafeArea(
             child: Center(             
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
 
                   children: <Widget>[
 
@@ -64,7 +53,11 @@ class ChoicePageState extends State<ChoicePage> {
                       width: 170,
                       decoration: (BoxDecoration(
                         image: DecorationImage(
-                          image: new NetworkImage(dogImage), fit: BoxFit.cover),
+                          fit: BoxFit.cover,
+                          image: dogImage != null 
+                          ? new NetworkImage(dogImage)
+                          : Container()
+                        ),
                         borderRadius: BorderRadius.circular(12),
                       ))),
                     onTap: () {
@@ -78,7 +71,11 @@ class ChoicePageState extends State<ChoicePage> {
                       width: 170,
                       decoration: (BoxDecoration(
                         image: DecorationImage(
-                          image: new NetworkImage(catImage), fit: BoxFit.cover),
+                          fit: BoxFit.cover,
+                          image: catImage != null 
+                          ? new NetworkImage(catImage)
+                          : Container()
+                        ),
                         borderRadius: BorderRadius.circular(12),
                       ))),
                     onTap: () {
@@ -87,11 +84,5 @@ class ChoicePageState extends State<ChoicePage> {
                   )
                 ])
         )));
-  }
-
-  void navigateToAnimalPage(String chosenAnimal) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return AnimalPage(chosenAnimal);
-    }));
   }
 }

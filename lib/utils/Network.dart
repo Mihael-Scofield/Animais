@@ -9,12 +9,9 @@ class Network {
     print('Calling uri: $url');
     Response response = await get(url);
 
-    if (response.statusCode == 200) 
-    {
+    if (response.statusCode == 200) {
       return response.body;
-    } 
-    else 
-    {
+    } else {
       throw Exception('Failed to load images');
     }
   }
