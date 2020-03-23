@@ -25,6 +25,7 @@ class AnimalPageState extends State<AnimalPage> {
   // Lista
   List<String> animalsImages = new List();
   CatList catList;
+  String placeHolderAnimal;
 
   // Decide o titulo da pagina
   String decideTitlePage() {
@@ -51,8 +52,10 @@ class AnimalPageState extends State<AnimalPage> {
       });
     }
     else {
-    String newCatImage = await fetchData.setCatImage();      
-      addAnimalImage(newCatImage);
+      String newCatImage = await fetchData.setCatImage();   
+      setState(() {
+        addAnimalImage(newCatImage);
+      });   
     }
   }
 
@@ -63,6 +66,16 @@ class AnimalPageState extends State<AnimalPage> {
     }
   }
 
+  // Retorna o animal utilizado como Place Holder
+  String setPlaceHolderImage() {
+    if (chosenAnimal == 'cachorro')  {
+      return 'assets/loadingDog.gif';
+    }
+    else {
+      return 'assets/loadingCat.gif';
+    }
+  } 
+
   @override
   
   // Estado inicial da pagina
@@ -70,6 +83,7 @@ class AnimalPageState extends State<AnimalPage> {
     super.initState();
 
     titlePage = decideTitlePage();
+    placeHolderAnimal = setPlaceHolderImage();
     fetchEight();
 
     _scrollController.addListener(() {
@@ -94,20 +108,24 @@ class AnimalPageState extends State<AnimalPage> {
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: Container(                  
-                height: 170,
-                width: 170,
-                decoration: (BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: animalsImages[index] != null 
-                    ? new NetworkImage(animalsImages[index])
-                    : Container()
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ))),
-              );
+
+              return InkWell(
+                    child: ClipRRect (
+                      borderRadius: BorderRadius.circular(25),
+                      child: animalsImages[index] != null // First image is the placeholder
+                          ? FadeInImage(
+                          fadeInCurve: Curves.easeIn,
+                          fadeInDuration: Duration(milliseconds: 1500),
+                          image: NetworkImage(animalsImages[index]),
+                          placeholder: AssetImage(placeHolderAnimal),
+                          height: 100,
+                          width: 100,                    
+                          fit: BoxFit.cover
+                          )
+                          : Container()
+                        ),
+                      );
+
             }));
   }
 }

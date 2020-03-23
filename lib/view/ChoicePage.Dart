@@ -1,7 +1,6 @@
 import 'package:cat_app/utils/FetchData.dart';
 import 'package:flutter/material.dart';
 import 'package:cat_app/view/AnimalPage.dart';
-import 'package:cat_app/model/Cats.dart';
 
 class ChoicePage extends StatefulWidget {
   @override
@@ -14,6 +13,9 @@ class ChoicePageState extends State<ChoicePage> {
   String catImage;
   String dogImage;
 
+  String placeHolderCatImage = 'https://cdn2.thecatapi.com/images/bej.jpg';
+  String placeHolderDogImage = 'https://images.dog.ceo//breeds//retriever-golden//n02099601_2408.jpg';
+
   @override
   void initState() {
     super.initState();
@@ -21,11 +23,14 @@ class ChoicePageState extends State<ChoicePage> {
   }
 
   void setAnimalsImages() async {
-    FetchData fetchData = new FetchData();
-   setState(() async {
-      catImage = await fetchData.setCatImage();
-      dogImage = await fetchData.setDogImage();      
-    });
+   FetchData fetchData = new FetchData();
+   String newDogImageUrl = await fetchData.setDogImage();
+   String newCatImageUrl = await fetchData.setCatImage();
+
+   setState(() {
+    dogImage = newDogImageUrl;
+    catImage = newCatImageUrl;
+   });
   }
 
   void navigateToAnimalPage(String chosenAnimal) {
@@ -43,45 +48,50 @@ class ChoicePageState extends State<ChoicePage> {
         body: SafeArea(
             child: Center(             
                 child: Wrap(
-                  alignment: WrapAlignment.spaceEvenly,
+                  alignment: WrapAlignment.end,
+                  spacing: 25.0,
 
                   children: <Widget>[
 
                   InkWell(
-                    child: Container(
-                      height: 170,
-                      width: 170,
-                      decoration: (BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: dogImage != null 
-                          ? new NetworkImage(dogImage)
-                          : Container()
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ))),
-                    onTap: () {
-                      navigateToAnimalPage('cachorro');
-                    },
-                  ),
+                    child: ClipRRect (
+                      borderRadius: BorderRadius.circular(25),
+                      child: dogImage != null
+                          ? FadeInImage(
+                          fadeInCurve: Curves.easeIn,
+                          fadeInDuration: Duration(milliseconds: 1500), // 1,5seg.
+                          image: NetworkImage(dogImage),
+                          placeholder: AssetImage('assets/loadingDog.gif'),
+                          height: 170,
+                          width: 170,                          
+                          fit: BoxFit.cover
+                          )
+                          : Container(),
+                        ),                        
+                        onTap: () {
+                          navigateToAnimalPage('cachorro');
+                        },
+                      ),
 
                   InkWell(
-                      child: Container(                  
-                      height: 170,
-                      width: 170,
-                      decoration: (BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: catImage != null 
-                          ? new NetworkImage(catImage)
-                          : Container()
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ))),
-                    onTap: () {
-                      navigateToAnimalPage('gato');
-                    },
-                  )
+                    child: ClipRRect (
+                      borderRadius: BorderRadius.circular(25),
+                      child: dogImage != null
+                          ? FadeInImage(
+                          fadeInCurve: Curves.easeIn,
+                          fadeInDuration: Duration(seconds: 2),
+                          image: NetworkImage(catImage),
+                          placeholder: AssetImage('assets/loadingCat.gif'),
+                          height: 170,
+                          width: 170,                          
+                          fit: BoxFit.cover
+                          )
+                          : Container(),
+                        ),                        
+                        onTap: () {
+                          navigateToAnimalPage('gato');
+                        },
+                      ),
                 ])
         )));
   }

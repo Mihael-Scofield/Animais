@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Animais são fofos',
       theme: ThemeData(
-        primarySwatch: Colors.pink
+        primarySwatch: Colors.amber
       ),
       home: ChoicePage()
     );
