@@ -33,7 +33,12 @@ class AnimalPageState extends State<AnimalPage> {
       return "Cachorros amam abanar o rabo";
     }
     else {
-      return "Gatos amam morder os donos";
+      if (chosenAnimal == 'gato') {
+        return "Gatos amam morder os donos";
+      }
+      else {
+        return "Que som que a raposa faz?";
+      }
     }
   }
 
@@ -52,10 +57,18 @@ class AnimalPageState extends State<AnimalPage> {
       });
     }
     else {
-      String newCatImage = await fetchData.setCatImage();   
-      setState(() {
-        addAnimalImage(newCatImage);
-      });   
+      if (chosenAnimal == 'gato') {
+        String newCatImage = await fetchData.setCatImage();   
+        setState(() {
+          addAnimalImage(newCatImage);
+        });
+      }
+      else {
+        String newFoxImage = await fetchData.setFoxImage();   
+        setState(() {
+          addAnimalImage(newFoxImage);
+        });
+      }
     }
   }
 
@@ -71,8 +84,14 @@ class AnimalPageState extends State<AnimalPage> {
     if (chosenAnimal == 'cachorro')  {
       return 'assets/loadingDog.gif';
     }
-    else {
-      return 'assets/loadingCat.gif';
+    else 
+    { 
+      if (chosenAnimal == 'gato') {
+        return 'assets/loadingCat.gif';
+      }
+      else {
+        return 'assets/loadingFox.gif';
+      }
     }
   } 
 

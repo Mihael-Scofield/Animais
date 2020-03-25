@@ -10,11 +10,7 @@ class ChoicePage extends StatefulWidget {
 }
 
 class ChoicePageState extends State<ChoicePage> {
-  String catImage;
-  String dogImage;
-
-  String placeHolderCatImage = 'https://cdn2.thecatapi.com/images/bej.jpg';
-  String placeHolderDogImage = 'https://images.dog.ceo//breeds//retriever-golden//n02099601_2408.jpg';
+  String catImage, dogImage, foxImage;
 
   @override
   void initState() {
@@ -26,10 +22,12 @@ class ChoicePageState extends State<ChoicePage> {
    FetchData fetchData = new FetchData();
    String newDogImageUrl = await fetchData.setDogImage();
    String newCatImageUrl = await fetchData.setCatImage();
+   String newFoxImageUrl = await fetchData.setFoxImage();
 
    setState(() {
     dogImage = newDogImageUrl;
     catImage = newCatImageUrl;
+    foxImage = newFoxImageUrl;
    });
   }
 
@@ -48,7 +46,7 @@ class ChoicePageState extends State<ChoicePage> {
         body: SafeArea(
             child: Center(             
                 child: Wrap(
-                  alignment: WrapAlignment.end,
+                  alignment: WrapAlignment.spaceBetween,
                   spacing: 25.0,
 
                   children: <Widget>[
@@ -76,7 +74,7 @@ class ChoicePageState extends State<ChoicePage> {
                   InkWell(
                     child: ClipRRect (
                       borderRadius: BorderRadius.circular(25),
-                      child: dogImage != null
+                      child: catImage != null
                           ? FadeInImage(
                           fadeInCurve: Curves.easeIn,
                           fadeInDuration: Duration(seconds: 2),
@@ -92,6 +90,26 @@ class ChoicePageState extends State<ChoicePage> {
                           navigateToAnimalPage('gato');
                         },
                       ),
+
+                  InkWell(
+                    child: ClipRRect (
+                      borderRadius: BorderRadius.circular(25),
+                      child: foxImage != null
+                          ? FadeInImage(
+                          fadeInCurve: Curves.easeIn,
+                          fadeInDuration: Duration(seconds: 2),
+                          image: NetworkImage(foxImage),
+                          placeholder: AssetImage('assets/loadingFox.gif'),
+                          height: 170,
+                          width: 170,                          
+                          fit: BoxFit.cover
+                          )
+                          : Container(),
+                        ),                        
+                        onTap: () {
+                          navigateToAnimalPage('raposa');
+                        },
+                      ),                      
                 ])
         )));
   }
