@@ -1,6 +1,6 @@
 # Animais
 
-Aplicativo desenvolvido na linguagem Dart com o SDK Flutter. O aplicativo puxa diferentes APIs com imagens aleatórias de animais. Ele conta com uma grade de escolha e após escolher o animal ele apresenta uma lista infinita de imagens.
+Aplicativo desenvolvido na linguagem Dart com o SDK Flutter. O aplicativo puxa diferentes APIs com imagens aleatórias de animais. Ele conta com uma grade de escolha contendo, inicialmente dois animais (agora um terceiro foi implementado), e após escolher o animal a aplicação apresenta uma lista infinita de imagens desse animal em específico.
 
 Implementado por Mihael Scofield de Azevedo.
 
