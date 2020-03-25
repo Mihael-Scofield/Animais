@@ -6,7 +6,7 @@ class AnimalPage extends StatefulWidget {
   String chosenAnimal;
 
   AnimalPage(this.chosenAnimal);
-  
+
   @override
   State<StatefulWidget> createState() {
     return AnimalPageState(this.chosenAnimal);
@@ -31,12 +31,10 @@ class AnimalPageState extends State<AnimalPage> {
   String decideTitlePage() {
     if (chosenAnimal == 'cachorro') {
       return "Cachorros amam abanar o rabo";
-    }
-    else {
+    } else {
       if (chosenAnimal == 'gato') {
         return "Gatos amam morder os donos";
-      }
-      else {
+      } else {
         return "Que som que a raposa faz?";
       }
     }
@@ -55,16 +53,14 @@ class AnimalPageState extends State<AnimalPage> {
       setState(() {
         addAnimalImage(newDogImage);
       });
-    }
-    else {
+    } else {
       if (chosenAnimal == 'gato') {
-        String newCatImage = await fetchData.setCatImage();   
+        String newCatImage = await fetchData.setCatImage();
         setState(() {
           addAnimalImage(newCatImage);
         });
-      }
-      else {
-        String newFoxImage = await fetchData.setFoxImage();   
+      } else {
+        String newFoxImage = await fetchData.setFoxImage();
         setState(() {
           addAnimalImage(newFoxImage);
         });
@@ -81,22 +77,19 @@ class AnimalPageState extends State<AnimalPage> {
 
   // Retorna o animal utilizado como Place Holder
   String setPlaceHolderImage() {
-    if (chosenAnimal == 'cachorro')  {
+    if (chosenAnimal == 'cachorro') {
       return 'assets/loadingDog.gif';
-    }
-    else 
-    { 
+    } else {
       if (chosenAnimal == 'gato') {
         return 'assets/loadingCat.gif';
-      }
-      else {
+      } else {
         return 'assets/loadingFox.gif';
       }
     }
-  } 
+  }
 
   @override
-  
+
   // Estado inicial da pagina
   void initState() {
     super.initState();
@@ -112,39 +105,37 @@ class AnimalPageState extends State<AnimalPage> {
       }
     });
   }
- 
+
+  GridView createGridView() {
+    return GridView.builder(
+        controller: _scrollController,
+        itemCount: animalsImages.length,
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: animalsImages[index] != null
+                    ? FadeInImage(
+                        fadeInCurve: Curves.easeIn,
+                        fadeInDuration: Duration(milliseconds: 1500),
+                        image: NetworkImage(animalsImages[index]),
+                        placeholder: AssetImage(placeHolderAnimal),
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover)
+                    : Container()),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(titlePage),
         ),
-
-        
-        body: GridView.builder(
-            controller: _scrollController,
-            itemCount: animalsImages.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (BuildContext context, int index) {
-
-              return InkWell(
-                    child: ClipRRect (
-                      borderRadius: BorderRadius.circular(25),
-                      child: animalsImages[index] != null // First image is the placeholder
-                          ? FadeInImage(
-                          fadeInCurve: Curves.easeIn,
-                          fadeInDuration: Duration(milliseconds: 1500),
-                          image: NetworkImage(animalsImages[index]),
-                          placeholder: AssetImage(placeHolderAnimal),
-                          height: 100,
-                          width: 100,                    
-                          fit: BoxFit.cover
-                          )
-                          : Container()
-                        ),
-                      );
-
-            }));
+        body: createGridView());
   }
 }
