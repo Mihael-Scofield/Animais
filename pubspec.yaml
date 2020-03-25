@@ -28,4 +28,5 @@ flutter:
   assets:
     - assets/loadingCat.gif
     - assets/loadingDog.gif
+    - assets/loadingFox.gif
 

@@ -1,6 +1,7 @@
 import 'package:http/http.dart';
 import 'package:cat_app/utils/CatApi.dart';
 import 'package:cat_app/utils/DogApi.dart';
+import 'package:cat_app/utils/FoxApi.dart';
 import 'package:cat_app/model/Cats.dart';
 import 'dart:convert';  
 
@@ -21,4 +22,10 @@ class FetchData {
     catList = CatList.fromJson(catMap);
     return (catList.breeds[0].url);
   }
+
+  Future<String> setFoxImage() async {
+    String foxImageUrl = await FoxAPI().getFoxBreeds();
+    print(foxImageUrl);
+    return (foxImageUrl);
+  }  
 }  
